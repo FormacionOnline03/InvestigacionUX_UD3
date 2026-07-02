@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Centro Cultural Fábrica Abierta</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="exit-overlay" id="exit-overlay"></div>
+  <main class="pagina-carga">
+    <img class="bg-image" src="../Recursos/Imagenes/Img-PagCarga.jpg" alt="" aria-hidden="true" />
+    <section class="card" aria-labelledby="welcome-title">
+      <div class="card__inner">
+        <header class="card__header">
+          <h1 class="card__title" id="welcome-title">
+            <span class="card__title-mask"><span class="card__title-word">¡Te damos la bienvenida al Centro Cultural Fábrica Abierta!</span></span>
+          </h1>
+        </header>
+        <div class="card__logo" aria-label="Logo UDIT" role="img">
+          <span class="card__logo-text">UDIT</span>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    (function () {
+      var REDIRECT_DELAY = 3800;
+      var redirected = false;
+
+      function goToContent() {
+        if (redirected) return;
+        redirected = true;
+        var overlay = document.getElementById('exit-overlay');
+        overlay.style.opacity = '1';
+        setTimeout(function () {
+          window.location.href = 'contenido.html';
+        }, 520);
+      }
+
+      setTimeout(goToContent, REDIRECT_DELAY);
+      document.addEventListener('click', goToContent);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') goToContent();
+      });
+    })();
+  </script>
+</body>
+</html>

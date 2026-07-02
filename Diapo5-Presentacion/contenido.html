@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Centro Cultural Fábrica Abierta</title>
+<style>
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0px;
+  overflow-x: hidden;
+}
+a {
+  text-decoration: none;
+}
+
+/* Espaciador que da recorrido de scroll para el crossfade del texto.
+   .slide queda fijo en pantalla (no se desplaza); solo el texto del
+   panel cambia de un párrafo a otro a medida que se hace scroll. */
+.scroll-space {
+  height: 450vh;
+}
+
+/* Fuentes locales del sistema de diseño (Figma). Si no están instaladas
+   en el dispositivo, se usa el fallback Helvetica indicado en cada regla. */
+@font-face {
+  font-family: "Inter-Regular";
+  src: local("Inter-Regular");
+}
+@font-face {
+  font-family: "Inter-Bold";
+  src: local("Inter-Bold");
+}
+
+:root {
+  --rosaalcal: rgba(223, 93, 150, 1);
+  --azulalcal: rgba(35, 181, 218, 1);
+  --variable-collection-verde-udit: rgba(129, 247, 135, 1);
+  --variable-collection-violeta-udit: rgba(202, 174, 255, 1);
+  --variable-collection-amarillo-udit: rgba(239, 232, 101, 1);
+  --variable-collection-rosa-udit: rgba(252, 174, 213, 1);
+  --variable-collection-burdeos-udit: rgba(109, 48, 73, 1);
+  --variable-collection-azul-udit: rgba(43, 58, 122, 1);
+  --variable-collection-azulclaro-udit: rgba(105, 228, 249, 1);
+  --variable-collection-color: rgba(16, 94, 88, 1);
+  --variable-collection-color-2: rgba(89, 57, 122, 1);
+}
+
+/* ─── SLIDE ─────────────────────────────────────────────────────
+   La imagen cubre toda la pantalla como fondo y el panel queda
+   pegado por completo al borde derecho (alto 100%), sin márgenes
+   ni recuadro de proporción fija. El panel es su propio contenedor
+   de medida (container-type) y sus hijos usan cqw relativos al
+   ANCHO DEL PANEL (926px de referencia en el diseño de Figma = 100cqw
+   del panel), para escalar de forma proporcional sin salirse. */
+.slide {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #3c1904;
+}
+
+.slide .image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.slide .frame {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 48.229%;
+  height: 100%;
+  background-color: #e0d1a8;
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+.slide .frame__content {
+  height: 100%;
+  box-sizing: border-box;
+  padding: 5.8cqw 7.5cqw;
+  display: grid;
+}
+
+/* Bloque "antiguo" (título, frase, miniatura y párrafo original). Al
+   hacer scroll se traslada hacia arriba y desaparece tras el borde
+   superior del panel (clip por el overflow:hidden de .frame). Al
+   tener su propia altura real, ya no se ve afectado por la longitud
+   del texto nuevo. */
+.slide .frame__old {
+  grid-area: 1 / 1;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.slide .frame__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.slide .div {
+  width: 100%;
+  margin: 0;
+  font-family: "Inter-Bold", Helvetica;
+  font-weight: 700;
+  color: #551f00;
+  font-size: 1.620cqw;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 2.192cqw;
+}
+
+.slide .p {
+  width: 100%;
+  margin: 3.5cqw 0 0;
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #551f00;
+  font-size: 4.860cqw;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.slide .image-wrapper {
+  width: 22.030cqw;
+  height: 26.674cqw;
+  margin: 0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+.slide .img {
+  display: block;
+  width: 22.030cqw;
+  height: 26.674cqw;
+  object-fit: cover;
+}
+
+.slide .text-wrapper {
+  width: 100%;
+  margin: 0;
+  font-family: "Inter-Regular", Helvetica;
+  font-weight: 400;
+  color: #551f00;
+  font-size: 2.700cqw;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 3.650cqw;
+}
+
+/* ─── ENTRADA SECUENCIAL (sección 1) ────────────────────────────
+   Misma técnica de máscara que el título de la página de carga:
+   cada bloque de texto completo vive en una máscara (overflow:hidden)
+   y se desliza hacia arriba de una sola vez. Entran en cascada:
+   primero el título, luego la frase (a la vez que la imagen), luego
+   el párrafo. */
+.entry-mask {
+  display: block;
+  overflow: hidden;
+}
+
+.entry-word {
+  display: block;
+  animation: entry-reveal 0.5s ease-in-out both;
+}
+
+/* La imagen se abre de arriba a abajo, igual que la tarjeta de la
+   página de carga (mismo clip-path, misma curva ease-in-out). */
+.entry-word--scroll {
+  display: block;
+}
+
+@keyframes entry-reveal {
+  from { transform: translateY(110%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes entry-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* El párrafo final del bloque 1 entra solo con opacidad (sin máscara). */
+.entry-fade {
+  opacity: 0;
+  animation: entry-fade 0.5s ease-in-out 2.4s both;
+}
+
+@keyframes image-reveal {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 0% 0); }
+}
+
+.image-reveal {
+  animation: image-reveal 0.6s ease-in-out 0.8s both;
+}
+
+/* Los textos que sustituyen al bloque inicial viven todos en la misma
+   celda de grid que .frame__old, independientes de su altura. */
+.slide .text-wrapper--new {
+  grid-area: 1 / 1;
+  align-self: center;
+  justify-self: center;
+  opacity: 0;
+  z-index: 1;
+}
+
+/* Sección 2: anclada abajo a la izquierda, texto alineado a la izquierda. */
+.slide .text-wrapper--br {
+  align-self: end;
+  justify-self: start;
+  width: 62%;
+  text-align: left;
+}
+
+/* Sección 3: imagen placeholder arriba + texto (dos párrafos) abajo,
+   distribuidos con space-between; ambos alineados a la izquierda. */
+.slide .section3 {
+  grid-area: 1 / 1;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0;
+  z-index: 1;
+}
+
+.slide .section3__placeholder {
+  width: 100%;
+  height: 38cqw;
+  box-sizing: border-box;
+  display: block;
+  object-fit: cover;
+}
+
+.slide .section3__text {
+  width: 100%;
+  text-align: left;
+}
+
+.slide .section3__text p {
+  margin: 0;
+  font-family: "Inter-Regular", Helvetica;
+  font-weight: 400;
+  color: #551f00;
+  font-size: 2.700cqw;
+  letter-spacing: 0;
+  line-height: 3.650cqw;
+}
+
+.slide .section3__text p + p {
+  margin-top: 1.8cqw;
+}
+
+/* Sección 4 (cierre): misma tipografía que la frase destacada (.p). */
+.slide .text-wrapper--serif {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 4.860cqw;
+  line-height: normal;
+}
+</style>
+</head>
+<body>
+<main class="slide" aria-labelledby="site-title">
+  <img
+    class="image"
+    src="../Recursos/Imagenes/Img-Home1.jpg"
+    alt="Escultura en primer plano dentro de un espacio expositivo industrial rehabilitado"
+  />
+  <section class="frame" aria-labelledby="site-title" aria-describedby="site-description site-details">
+    <div class="frame__content">
+      <div class="frame__old" id="frame-old">
+        <div class="frame__intro">
+          <h1 class="div" id="site-title"><span class="entry-mask"><span class="entry-word" style="animation-delay:0s">CENTRO CULTURAL FÁBRICA ABIERTA</span></span></h1>
+          <p class="p" id="site-description"><span class="entry-mask"><span class="entry-word" style="animation-delay:0.8s">Un entorno en el que conviven la creación artística, la innovación tecnológica y la participación ciudadana.</span></span></p>
+        </div>
+        <figure class="image-wrapper image-reveal">
+          <img
+            class="img"
+            src="../Recursos/Imagenes/Img-Home2.jpg"
+            alt="Detalle interior del centro cultural con zócalos cerámicos decorativos"
+          />
+        </figure>
+        <p class="text-wrapper entry-fade" id="site-details">Fábrica Abierta es un centro cultural ubicado en un antiguo complejo industrial rehabilitado a las afueras de una gran ciudad. El espacio combina arquitectura histórico-industrial con intervenciones contemporáneas.</p>
+      </div>
+      <p class="text-wrapper text-wrapper--new text-wrapper--br" id="site-details-2">El centro ofrece una programación diversa que incluye exposiciones de arte contemporáneo, ciclos de cine, festivales de música, talleres de formación y actividades dirigidas a públicos de todas las edades. Además, cuenta con espacios permanentes como una mediateca, zonas de coworking creativo, laboratorios de fabricación digital y áreas al aire libre destinadas a eventos y encuentros comunitarios.</p>
+      <div class="section3" id="site-details-3">
+        <img class="section3__placeholder" src="../Recursos/Imagenes/Img_Seccion3.jpg" alt="" />
+        <div class="section3__text">
+          <p>Dado el volumen y la complejidad de la información que gestiona, el sitio web es una herramienta clave para diferentes tipos de usuarios, como visitantes ocasionales que buscan un plan cultural para el fin de semana y profesionales del sector creativo interesados en colaborar con el centro o participar en sus programas.</p>
+          <p>Explorar el sitio web del centro cultural implica navegar por un ecosistema digital amplio, dinámico y en constante evolución en el que la organización de la información, la claridad en la navegación y la accesibilidad juegan un papel fundamental en la experiencia de los usuarios.</p>
+        </div>
+      </div>
+      <p class="text-wrapper text-wrapper--new text-wrapper--serif" id="site-details-4"><span class="entry-mask"><span class="entry-word--scroll" id="site-details-4-inner">A continuación, visitarás el sitio web<br />del centro cultural.</span></span></p>
+    </div>
+  </section>
+</main>
+<div class="scroll-space" aria-hidden="true"></div>
+<script>
+  (function () {
+    var oldBlock = document.getElementById('frame-old');
+    var text2 = document.getElementById('site-details-2');
+    var text3 = document.getElementById('site-details-3');
+    var text4 = document.getElementById('site-details-4');
+    var text4Inner = document.getElementById('site-details-4-inner');
+    var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+
+    function onScroll() {
+      var sy = window.scrollY;
+      var vh = window.innerHeight;
+
+      // Progreso 0-1 entre dos puntos expresados en "alturas de viewport".
+      function seg(a, b) { return clamp((sy - vh * a) / (vh * (b - a)), 0, 1); }
+
+      // El bloque antiguo (título, frase, miniatura, párrafo): la
+      // opacidad baja muchísimo más rápido que la distancia recorrida
+      // hacia arriba, que mantiene un recorrido más largo/pausado.
+      var oldFade = seg(0, 0.15);
+      var oldMove = seg(0, 0.6);
+      oldBlock.style.transform = 'translateY(-' + (oldMove * 130).toFixed(2) + '%)';
+      oldBlock.style.opacity = 1 - oldFade;
+
+      // Cadena de textos: cada uno entra con fade-in y luego se
+      // desvanece para dar paso al siguiente. El último se queda y
+      // termina de aparecer antes del final del scroll disponible.
+      text2.style.opacity = seg(0.1, 0.6) * (1 - seg(1.1, 1.5));
+      text3.style.opacity = seg(1.3, 1.8) * (1 - seg(2.3, 2.7));
+      var text4In = seg(2.5, 2.9);
+      text4.style.opacity = text4In;
+      text4Inner.style.transform = 'translateY(' + ((1 - text4In) * 110).toFixed(2) + '%)';
+    }
+
+    document.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+</body>
+</html>
