@@ -562,8 +562,6 @@ function getScreenGaps(screenIdx) {
   return result;
 }
 
-const TOTAL_GAPS = SCREENS.reduce((sum, _screen, i) => sum + getScreenGaps(i).length, 0);
-
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -683,11 +681,14 @@ function attachGapListeners() {
   });
 }
 
-/* ── Progress (global, across all screens) ── */
+/* ── Progress (relativo a la pantalla actual) ── */
 function updateProgress() {
-  const pct = TOTAL_GAPS ? (solvedKeys.size / TOTAL_GAPS * 100) : 0;
+  const screenGaps = getScreenGaps(currentIndex);
+  const solvedInScreen = screenGaps.filter(g => solvedKeys.has(g.key)).length;
+  const totalInScreen = screenGaps.length;
+  const pct = totalInScreen ? (solvedInScreen / totalInScreen * 100) : 0;
   document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressCount').textContent = solvedKeys.size + ' de ' + TOTAL_GAPS + ' completadas';
+  document.getElementById('progressCount').textContent = solvedInScreen + ' de ' + totalInScreen + ' completadas';
 }
 
 /* ── Carousel navigation ── */

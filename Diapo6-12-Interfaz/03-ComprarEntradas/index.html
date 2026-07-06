@@ -69,6 +69,7 @@
         "Se incrementa la carga cognitiva de forma notable.",
         "El usuario no percibe claramente en qué fase está."
       ],
+      fixTitle: "Implementar un flujo real por pasos",
       fix: [
         "Dividir el proceso en pantallas o etapas claras: selección de entradas, datos personales, pago y confirmación, para reducir la carga cognitiva y alinear el indicador con el comportamiento real."
       ],
@@ -87,6 +88,7 @@
         "Se genera una expectativa que no se cumple.",
         "Se incumple la heurística de consistencia y estándares."
       ],
+      fixTitle: "Implementar un flujo real por pasos",
       fix: [
         "Dividir el proceso en pantallas o etapas claras (selección de entradas, datos personales, pago y confirmación) para alinear el indicador con el comportamiento real del sistema."
       ],
@@ -106,6 +108,7 @@
         "No indica qué ocurre exactamente cuando el tiempo finaliza.",
         "Afecta negativamente a la experiencia y a la confianza."
       ],
+      fixTitle: "Eliminar o justificar el temporizador",
       fix: [
         "Eliminar el temporizador o explicarlo claramente.",
         "Incluir feedback visual del progreso.",
@@ -127,6 +130,7 @@
         "El usuario debe alternar la atención constantemente.",
         "Genera fricción en la comprensión del sistema."
       ],
+      fixTitle: "Mejorar la relación entre selección y resumen",
       fix: [
         "Hacer que el resumen se actualice claramente en tiempo real.",
         "Hacer que el resumen destaque los cambios visualmente.",
@@ -148,6 +152,7 @@
         "La relación entre selección y resumen no es evidente.",
         "Esto afecta a la visibilidad del estado del sistema."
       ],
+      fixTitle: "Mejorar la relación entre selección y resumen",
       fix: [
         "Hacer que el resumen se actualice claramente en tiempo real.",
         "Hacer que el resumen destaque los cambios visualmente.",
@@ -170,6 +175,7 @@
         "Genera mayor esfuerzo cognitivo.",
         "Genera errores potenciales en la introducción de datos."
       ],
+      fixTitle: "Reorganizar el formulario por bloques semánticos",
       fix: [
         "Agrupar el formulario en datos personales, datos de contacto e información adicional.",
         "Presentar el formulario en una columna única para facilitar la lectura."
@@ -188,6 +194,7 @@
         "Genera confusión en la interacción.",
         "Genera una falta de control percibido."
       ],
+      fixTitle: "Clarificar el método de pago",
       fix: [
         "Mostrar solo los campos del método seleccionado.",
         "Explicar cada opción.",
@@ -208,6 +215,7 @@
         "Puede no percibirse como el siguiente paso natural.",
         "Su ubicación puede hacer que el usuario lo ignore inicialmente."
       ],
+      fixTitle: "Reubicar el CTA principal",
       fix: [
         "Hacer que el CTA aparezca al final del flujo de lectura.",
         "Hacer que el CTA esté alineado con la sección activa.",
@@ -227,6 +235,7 @@
         "Genera falta de claridad en el momento de decisión.",
         "Genera un posible rechazo o duda en el usuario."
       ],
+      fixTitle: "Integrar correctamente la información legal",
       fix: [
         "Explicar las condiciones antes del momento de aceptación.",
         "Relacionar las condiciones con el contexto del pago.",
@@ -248,6 +257,7 @@
         "Genera riesgo de errores acumulados.",
         "Genera frustración en el usuario al enviar el formulario."
       ],
+      fixTitle: "Mejorar validaciones y feedback",
       fix: [
         "Introducir validaciones en tiempo real.",
         "Introducir mensajes de error claros.",
@@ -267,6 +277,7 @@
       why: [
         "Afecta el control y libertad del usuario."
       ],
+      fixTitle: "Aumentar el control del usuario",
       fix: [
         "Mejorar la visibilidad del botón de cancelar.",
         "Explicar las consecuencias de la cancelación.",
@@ -288,6 +299,7 @@
       why: [
         "Dificulta la interacción para ciertos perfiles de usuario."
       ],
+      fixTitle: "Mejorar accesibilidad y legibilidad",
       fix: [
         "Aplicar mayor contraste.",
         "Aumentar tamaños tipográficos.",
@@ -405,7 +417,7 @@
           </div>
         </div>
 
-        <button class="reveal-btn" id="revealBtn">¿Qué es correcto? <img class="chev" src="../../Recursos/iconos/arrow-right-solid-full.svg" alt="" /></button>
+        <button class="reveal-btn" id="revealBtn">Cómo debería de ser la interfaz correcta <img class="chev" src="../../Recursos/iconos/arrow-right-solid-full.svg" alt="" /></button>
 
         <div class="card card--good" id="cardGood" hidden>
           <div class="card__head">
@@ -415,6 +427,7 @@
             </div>
           </div>
           <div class="card__body">
+            <p class="card__subhead">${s.fixTitle}</p>
             ${bulletList(s.fix)}
           </div>
         </div>

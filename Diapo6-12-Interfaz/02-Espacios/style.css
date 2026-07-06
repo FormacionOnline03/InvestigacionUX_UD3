@@ -1,6 +1,13 @@
 /* ─── ESPACIOS · ANÁLISIS DE USABILIDAD ──────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
+@font-face {
+  font-family: 'BaltoBold';
+  src: url('../../Recursos/Fuentes/BaltoBold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
 :root {
   --bg: #ececeb;
   --panel: #ffffff;
@@ -12,6 +19,7 @@
   --bad: #e5402f;
   --good: #35b95a;
   --ink: #111111;
+  --font-balto: 'BaltoBold', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -112,6 +120,7 @@ html, body {
 }
 
 .intro__text {
+  font-family: var(--font-balto);
   font-size: 45px;
   font-weight: 700;
   line-height: 1.3;

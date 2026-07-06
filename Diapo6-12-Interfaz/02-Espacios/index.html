@@ -68,6 +68,7 @@
         "Se rompe el principio de recorrido cognitivo, ya que el flujo natural (explorar → decidir → reservar) no está claramente estructurado.",
         "Se incrementa la fricción, especialmente para usuarios nuevos."
       ],
+      fixTitle: "Separar claramente exploración y reserva",
       fix: [
         "Estructurar el flujo en dos fases claras: exploración de espacios y solicitud de reserva.",
         "Eliminar el formulario de la vista inicial."
@@ -87,6 +88,7 @@
         "Rompe con el principio de progresividad en la interacción.",
         "Puede generar abandono, ya que el formulario parece complejo y prematuro."
       ],
+      fixTitle: "Introducir un flujo progresivo de reserva",
       fix: [
         "Seguir una lógica progresiva: seleccionar espacio, ver detalles, comprobar disponibilidad y completar el formulario, respetando el recorrido cognitivo natural."
       ],
@@ -105,6 +107,7 @@
         "El usuario tiene que reconstruir mentalmente la relación.",
         "Se rompe la heurística de consistencia y estándares."
       ],
+      fixTitle: "Conectar directamente espacio y acción",
       fix: [
         "Cada tarjeta debería incluir un CTA claro: \"Reservar este espacio\" o \"Solicitar disponibilidad\".",
         "El CTA debe llevar a un formulario prerellenado y mantener el contexto del usuario."
@@ -124,6 +127,7 @@
         "El usuario no entiende qué filtro utilizar primero.",
         "Se dificulta encontrar un espacio de manera eficiente."
       ],
+      fixTitle: "Simplificar el sistema de filtros",
       fix: [
         "Priorizar filtros clave (capacidad, tipo, precio).",
         "Agrupar los avanzados en un panel desplegable.",
@@ -145,6 +149,7 @@
         "Genera dificultades de escaneo.",
         "Genera bajo rendimiento en la comparación entre opciones."
       ],
+      fixTitle: "Mejorar la jerarquía de las tarjetas",
       fix: [
         "Cada tarjeta debería destacar nombre del espacio, capacidad, precio y uso principal.",
         "Los detalles técnicos adicionales se relegan a la ficha completa."
@@ -165,6 +170,7 @@
         "Aumenta la incertidumbre.",
         "Reduce la conversión."
       ],
+      fixTitle: "Reforzar la claridad de los CTAs",
       fix: [
         "Establecer un CTA primario claro y consistente.",
         "Establecer una ubicación fija en todas las tarjetas.",
@@ -185,6 +191,7 @@
         "Se dificulta la completitud.",
         "Se incrementa el riesgo de abandono."
       ],
+      fixTitle: "Rediseñar el formulario",
       fix: [
         "Dividir el formulario en pasos.",
         "Agrupar los campos por bloques.",
@@ -206,6 +213,7 @@
         "Genera incertidumbre en el usuario.",
         "Genera pérdida de confianza."
       ],
+      fixTitle: "Mejorar el feedback del proceso",
       fix: [
         "Explicar qué ocurre tras enviar la solicitud.",
         "Explicar el tiempo de respuesta y los próximos pasos.",
@@ -226,6 +234,7 @@
         "Genera distracción.",
         "Genera ruido en la toma de decisiones."
       ],
+      fixTitle: "Reducir distracciones",
       fix: [
         "Integrar elementos como \"Cuéntanos tu idea\" como alternativa secundaria.",
         "Hacer que aparezcan en contexto para que no compitan con la tarea principal."
@@ -246,6 +255,7 @@
         "Genera dificultades de uso para determinados perfiles.",
         "Genera pérdida de legibilidad."
       ],
+      fixTitle: "Mejorar accesibilidad y legibilidad",
       fix: [
         "Aumentar el contraste.",
         "Reducir la densidad de información.",
@@ -363,7 +373,7 @@
           </div>
         </div>
 
-        <button class="reveal-btn" id="revealBtn">¿Qué es correcto? <img class="chev" src="../../Recursos/iconos/arrow-right-solid-full.svg" alt="" /></button>
+        <button class="reveal-btn" id="revealBtn">Cómo debería de ser la interfaz correcta <img class="chev" src="../../Recursos/iconos/arrow-right-solid-full.svg" alt="" /></button>
 
         <div class="card card--good" id="cardGood" hidden>
           <div class="card__head">
@@ -373,6 +383,7 @@
             </div>
           </div>
           <div class="card__body">
+            <p class="card__subhead">${s.fixTitle}</p>
             ${bulletList(s.fix)}
           </div>
         </div>

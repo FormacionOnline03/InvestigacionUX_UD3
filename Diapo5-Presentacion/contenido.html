@@ -25,7 +25,7 @@ a {
    .slide queda fijo en pantalla (no se desplaza); solo el texto del
    panel cambia de un párrafo a otro a medida que se hace scroll. */
 .scroll-space {
-  height: 450vh;
+  height: 570vh;
 }
 
 /* Fuentes locales del sistema de diseño (Figma). Si no están instaladas
@@ -316,13 +316,19 @@ a {
       </div>
       <p class="text-wrapper text-wrapper--new text-wrapper--br" id="site-details-2">El centro ofrece una programación diversa que incluye exposiciones de arte contemporáneo, ciclos de cine, festivales de música, talleres de formación y actividades dirigidas a públicos de todas las edades. Además, cuenta con espacios permanentes como una mediateca, zonas de coworking creativo, laboratorios de fabricación digital y áreas al aire libre destinadas a eventos y encuentros comunitarios.</p>
       <div class="section3" id="site-details-3">
+        <img class="section3__placeholder" src="../Recursos/Imagenes/Diapo6/1. LandingPage.png" alt="" />
+        <div class="section3__text">
+          <p>El sitio web es la principal puerta de entrada digital al centro cultural. Su objetivo es ofrecer información completa y actualizada sobre la programación, facilitar la compra de entradas y difundir los proyectos y actividades. Contiene agendas culturales, perfiles de artistas, convocatorias abiertas, noticias, archivos multimedia y recursos educativos.</p>
+        </div>
+      </div>
+      <div class="section3" id="site-details-4">
         <img class="section3__placeholder" src="../Recursos/Imagenes/Img_Seccion3.jpg" alt="" />
         <div class="section3__text">
           <p>Dado el volumen y la complejidad de la información que gestiona, el sitio web es una herramienta clave para diferentes tipos de usuarios, como visitantes ocasionales que buscan un plan cultural para el fin de semana y profesionales del sector creativo interesados en colaborar con el centro o participar en sus programas.</p>
           <p>Explorar el sitio web del centro cultural implica navegar por un ecosistema digital amplio, dinámico y en constante evolución en el que la organización de la información, la claridad en la navegación y la accesibilidad juegan un papel fundamental en la experiencia de los usuarios.</p>
         </div>
       </div>
-      <p class="text-wrapper text-wrapper--new text-wrapper--serif" id="site-details-4"><span class="entry-mask"><span class="entry-word--scroll" id="site-details-4-inner">A continuación, visitarás el sitio web<br />del centro cultural.</span></span></p>
+      <p class="text-wrapper text-wrapper--new text-wrapper--serif" id="site-details-5"><span class="entry-mask"><span class="entry-word--scroll" id="site-details-5-inner">A continuación, visitarás el sitio web<br />del centro cultural.</span></span></p>
     </div>
   </section>
 </main>
@@ -333,7 +339,8 @@ a {
     var text2 = document.getElementById('site-details-2');
     var text3 = document.getElementById('site-details-3');
     var text4 = document.getElementById('site-details-4');
-    var text4Inner = document.getElementById('site-details-4-inner');
+    var text5 = document.getElementById('site-details-5');
+    var text5Inner = document.getElementById('site-details-5-inner');
     var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
 
     function onScroll() {
@@ -356,9 +363,10 @@ a {
       // termina de aparecer antes del final del scroll disponible.
       text2.style.opacity = seg(0.1, 0.6) * (1 - seg(1.1, 1.5));
       text3.style.opacity = seg(1.3, 1.8) * (1 - seg(2.3, 2.7));
-      var text4In = seg(2.5, 2.9);
-      text4.style.opacity = text4In;
-      text4Inner.style.transform = 'translateY(' + ((1 - text4In) * 110).toFixed(2) + '%)';
+      text4.style.opacity = seg(2.5, 3.0) * (1 - seg(3.5, 3.9));
+      var text5In = seg(3.7, 4.1);
+      text5.style.opacity = text5In;
+      text5Inner.style.transform = 'translateY(' + ((1 - text5In) * 110).toFixed(2) + '%)';
     }
 
     document.addEventListener('scroll', onScroll, { passive: true });

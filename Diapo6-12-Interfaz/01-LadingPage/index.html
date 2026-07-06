@@ -53,6 +53,7 @@
         "Genera sobrecarga cognitiva.",
         "Dificulta entender por dónde empezar."
       ],
+      fixTitle: "Reestructurar la navegación",
       fix: [
         "Usar menús desplegables.",
         "Agrupar entre 4 y 6 categorías como máximo: Programación, Visita, Participa (convocatorias, residencias), Espacios, Archivo."
@@ -73,6 +74,7 @@
         "El usuario no sabe cuál es la acción principal.",
         "El CTA está poco orientado a la tarea, el usuario no sabe qué debe hacer."
       ],
+      fixTitle: "Definir una acción principal clara",
       fix: [
         "Escribir CTAs orientados a la acción (\"Ver agenda\", \"Explorar eventos\").",
         "Reducir competencia visual alrededor."
@@ -97,6 +99,7 @@
         "Dificulta el escaneo rápido.",
         "El usuario no prioriza información."
       ],
+      fixTitle: "Reducir la carga cognitiva",
       fix: [
         "Priorizar sólo 2 o 3 bloques clave.",
         "Eliminar las tarjetas o agruparlas."
@@ -118,6 +121,7 @@
         "No cumple con la heurística de Nielsen de visibilidad del estado / jerarquía.",
         "Complica el recorrido cognitivo del usuario que quiere ver qué hacer hoy."
       ],
+      fixTitle: "Rediseñar la agenda",
       fix: [
         "Mejor jerarquía: título evento > hora > tipo.",
         "Añadir botones claros y mejor contraste.",
@@ -139,6 +143,7 @@
         "Falta de patrón claro de interacción.",
         "Genera inseguridad y esfuerzo cognitivo."
       ],
+      fixTitle: "Unificar CTAs",
       fix: [
         "Usar patrón consistente: \"Ver más\", \"Ver evento\", \"Explorar\".",
         "Mantener un estilo visual uniforme."
@@ -165,6 +170,7 @@
         "No cumple con la heurística de Nielsen de relación sistema–mundo real.",
         "Requiere conocimiento previo del sector cultural para entender el lenguaje."
       ],
+      fixTitle: "Mejorar naming",
       fix: [
         "Sustituir términos ambiguos (\"Labs\" → \"Laboratorios\", \"Archivo\" → \"Archivo digital\").",
         "Añadir microcopy explicativo."
@@ -188,6 +194,7 @@
         "Mezcla tipos de contenido (evento, servicio, archivo).",
         "Dificulta la decisión del usuario."
       ],
+      fixTitle: "Reorganizar el grid",
       fix: [
         "Separar por propósito: eventos, convocatorias, espacios.",
         "No mezclar en el mismo nivel."
@@ -207,6 +214,7 @@
         "No cumple con la heurística de Nielsen de visibilidad del estado del sistema.",
         "Empeora la navegación exploratoria."
       ],
+      fixTitle: "Mejorar orientación",
       fix: [
         "Marcar sección activa.",
         "Añadir breadcrumbs en navegación interna."
@@ -226,6 +234,7 @@
         "Interrumpe el flujo de navegación.",
         "Falta de valor claro en ese punto."
       ],
+      fixTitle: "Mejorar newsletter",
       fix: [
         "Integrarla en contexto (por ejemplo, junto a la agenda).",
         "Añadir valor: \"Recibe planes semanales\"."
@@ -245,6 +254,7 @@
       why: [
         "Excluye a usuarios con baja visión o dificultades para distinguir colores."
       ],
+      fixTitle: "Accesibilidad",
       fix: [
         "Aumentar el contraste.",
         "Usar tamaños mínimos accesibles.",
@@ -364,7 +374,7 @@
           </div>
         </div>
 
-        <button class="reveal-btn" id="revealBtn">¿Qué es correcto? <img class="chev" src="../../Recursos/iconos/arrow-right-solid-full.svg" alt="" /></button>
+        <button class="reveal-btn" id="revealBtn">Cómo debería de ser la interfaz correcta <img class="chev" src="../../Recursos/iconos/arrow-right-solid-full.svg" alt="" /></button>
 
         <div class="card card--good" id="cardGood" hidden>
           <div class="card__head">
@@ -374,6 +384,7 @@
             </div>
           </div>
           <div class="card__body">
+            <p class="card__subhead">${s.fixTitle}</p>
             ${bulletList(s.fix)}
           </div>
         </div>
