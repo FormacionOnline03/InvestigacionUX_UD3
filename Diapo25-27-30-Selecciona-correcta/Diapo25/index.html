@@ -598,7 +598,7 @@
     <div class="sidebar-label">Tarea 04</div>
     <h1 class="sidebar-title">Analiza la estructura de la información</h1>
     <p style="margin-top: 18px; font-size: 25px; line-height: 1.6; color: #444;">Ahora que has visto la información que el resto del equipo recopiló con las técnicas de card sorting y tree testing, elige la respuesta correcta para cada pregunta sobre la estructura de la información en el sitio web del centro cultural.</p>
-    <div class="sidebar-image-placeholder"></div>
+    <div class="sidebar-image-placeholder"><img src="../../Recursos/Imagenes/Tareas/CardSorting.jpg" alt="Resultado de la técnica de card sorting" /></div>
   </aside>
 
   <!-- MAIN -->
@@ -734,7 +734,16 @@ function resetFeedback() {
 function renderQuiz() {
   quizLocked = false;
   const quiz = QUIZZES[currentQuizIndex];
-  document.getElementById('mcTitle').textContent = quiz.title;
+  const titleEl = document.getElementById('mcTitle');
+  const questionStart = quiz.title.indexOf('¿');
+  if (questionStart > 0) {
+    const intro = quiz.title.slice(0, questionStart).trim();
+    const question = quiz.title.slice(questionStart);
+    titleEl.innerHTML = '';
+    titleEl.append(intro, document.createElement('br'), question);
+  } else {
+    titleEl.textContent = quiz.title;
+  }
   resetFeedback();
 
   const container = document.getElementById('mcOptions');
