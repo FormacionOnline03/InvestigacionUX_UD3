@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Espacios del centro — La Fábrica Abierta | Análisis de usabilidad</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app">
+
+  <section class="stage" aria-hidden="true">
+    <div class="frame" id="frame">
+      <img class="frame__img" src="../../Recursos/Imagenes/CentroCulturalFábricaAbierta/5. Espacios.png" alt="Página de Espacios del centro de La Fábrica Abierta" draggable="false" />
+      <div class="spotlights" id="spotlights"></div>
+    </div>
+  </section>
+
+  <aside class="info">
+    <div class="info__content" id="infoContent"></div>
+    <nav class="info__nav" id="infoNav" hidden>
+      <div class="nav__progress">
+        <span class="nav__counter"><strong id="counterCurrent">1</strong>/<span id="counterTotal">10</span></span>
+        <div class="nav__bar"><div class="nav__fill" id="navFill"></div></div>
+      </div>
+      <div class="nav__buttons">
+        <button class="navbtn" id="prevBtn" aria-label="Problema anterior">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="navbtn" id="nextBtn" aria-label="Problema siguiente">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+</div>
+
+<script>
+  // Regiones reutilizables de la captura "Espacios del centro" (1536x1024)
+  const R = {
+    HEADER:       { x: 0,    y: 0,    w: 100, h: 8.5 },
+    TITLE_AREA:   { x: 0,    y: 8.5,  w: 69,  h: 13.5 },
+    CONDITIONS:   { x: 56.8, y: 15.6, w: 12.7, h: 4.5 },
+    FORM:         { x: 73,   y: 15.6, w: 20.5, h: 63.4 },
+    FORM_FIELD1:  { x: 73,   y: 23,   w: 20.5, h: 5 },
+    FORM_SUBMIT:  { x: 73,   y: 70,   w: 20.5, h: 4 },
+    FORM_NOTE:    { x: 73,   y: 75,   w: 20.5, h: 3.5 },
+    TABS:         { x: 6.7,  y: 24, w: 54.6, h: 3.5 },
+    FILTERS:      { x: 6.7,  y: 29,   w: 61.5, h: 4 },
+    CARDS:        { x: 6.7,  y: 34,   w: 61.8, h: 43 },
+    CARD_BUTTONS: { x: 6.7,  y: 71.5, w: 61.8, h: 6 },
+    BANNER:       { x: 6.7,  y: 78,   w: 61.8, h: 5.5 }
+  };
+
+  const SLIDES = [
+    // ================================
+    // PROBLEMA 1: Mezcla de dos tareas principales sin priorización clara
+    // ================================
+    {
+      title: "Mezcla de dos tareas principales sin priorización clara",
+      problem: [
+        "La interfaz presenta simultáneamente un catálogo de espacios (exploración) y un formulario de solicitud de reserva (acción compleja), pero no se establece una jerarquía clara entre ambas tareas."
+      ],
+      why: [
+        "El usuario puede no saber si primero debe explorar o reservar.",
+        "Se rompe el principio de recorrido cognitivo, ya que el flujo natural (explorar → decidir → reservar) no está claramente estructurado.",
+        "Se incrementa la fricción, especialmente para usuarios nuevos."
+      ],
+      fix: [
+        "Estructurar el flujo en dos fases claras: exploración de espacios y solicitud de reserva.",
+        "Eliminar el formulario de la vista inicial."
+      ],
+      spots: [R.CARDS, R.FORM]
+    },
+    // ================================
+    // PROBLEMA 2: El formulario aparece demasiado pronto en el proceso
+    // ================================
+    {
+      title: "El formulario aparece demasiado pronto en el proceso",
+      problem: [
+        "El formulario de reserva aparece visible desde el inicio, incluso antes de que el usuario haya seleccionado un espacio concreto."
+      ],
+      why: [
+        "Exige tomar decisiones sin contexto suficiente.",
+        "Rompe con el principio de progresividad en la interacción.",
+        "Puede generar abandono, ya que el formulario parece complejo y prematuro."
+      ],
+      fix: [
+        "Seguir una lógica progresiva: seleccionar espacio, ver detalles, comprobar disponibilidad y completar el formulario, respetando el recorrido cognitivo natural."
+      ],
+      spots: [R.FORM]
+    },
+    // ================================
+    // PROBLEMA 3: Falta de conexión clara entre los espacios y el formulario
+    // ================================
+    {
+      title: "Falta de conexión clara entre los espacios y el formulario",
+      problem: [
+        "Por un lado, el usuario puede ver tarjetas de espacios con información (Nave 3, Auditorio, etc.) y, por otro, el formulario pide \"Selecciona un espacio\", pero no existe una conexión directa o evidente entre ambas partes."
+      ],
+      why: [
+        "El sistema no es consistente ni predecible.",
+        "El usuario tiene que reconstruir mentalmente la relación.",
+        "Se rompe la heurística de consistencia y estándares."
+      ],
+      fix: [
+        "Cada tarjeta debería incluir un CTA claro: \"Reservar este espacio\" o \"Solicitar disponibilidad\".",
+        "El CTA debe llevar a un formulario prerellenado y mantener el contexto del usuario."
+      ],
+      spots: [R.CARDS, R.FORM_FIELD1]
+    },
+    // ================================
+    // PROBLEMA 4: Exceso de sistemas de filtrado y clasificación
+    // ================================
+    {
+      title: "Exceso de sistemas de filtrado y clasificación",
+      problem: [
+        "La página incluye tabs superiores (tipos de espacios), filtros por tipo de actividad, capacidad, equipamiento y accesibilidad, y selector de vista (rejilla/lista), pero estos sistemas no están claramente jerarquizados ni explicados."
+      ],
+      why: [
+        "Se genera sobrecarga cognitiva.",
+        "El usuario no entiende qué filtro utilizar primero.",
+        "Se dificulta encontrar un espacio de manera eficiente."
+      ],
+      fix: [
+        "Priorizar filtros clave (capacidad, tipo, precio).",
+        "Agrupar los avanzados en un panel desplegable.",
+        "Mostrar claramente los filtros activos."
+      ],
+      spots: [R.TABS, R.FILTERS]
+    },
+    // ================================
+    // PROBLEMA 5: Problemas de jerarquía visual en las tarjetas
+    // ================================
+    {
+      title: "Problemas de jerarquía visual en las tarjetas",
+      problem: [
+        "Cada tarjeta contiene imagen, nombre del espacio, tipo (sala, auditorio…), descripción, especificaciones técnicas (superficie, capacidad, etc.), usos recomendados, precio y CTA, pero la información es densa y no está suficientemente priorizada.",
+        "Los datos clave (capacidad, precio) no destacan lo suficiente.",
+        "El CTA \"Ver detalles\" tiene poco peso visual."
+      ],
+      why: [
+        "Genera dificultades de escaneo.",
+        "Genera bajo rendimiento en la comparación entre opciones."
+      ],
+      fix: [
+        "Cada tarjeta debería destacar nombre del espacio, capacidad, precio y uso principal.",
+        "Los detalles técnicos adicionales se relegan a la ficha completa."
+      ],
+      spots: [R.CARDS]
+    },
+    // ================================
+    // PROBLEMA 6: CTA principal ambiguo e indirecto
+    // ================================
+    {
+      title: "CTA principal ambiguo e indirecto",
+      problem: [
+        "El usuario que quiere reservar un espacio se encuentra con varios caminos: \"Ver detalles\", el formulario lateral y \"Cuéntanos tu idea\".",
+        "No existe un CTA claro como \"Reservar este espacio\" o \"Solicitar disponibilidad\"."
+      ],
+      why: [
+        "No cumple con la heurística de claridad y orientación a tareas.",
+        "Aumenta la incertidumbre.",
+        "Reduce la conversión."
+      ],
+      fix: [
+        "Establecer un CTA primario claro y consistente.",
+        "Establecer una ubicación fija en todas las tarjetas.",
+        "Establecer diferenciación visual respecto a los CTAs secundarios."
+      ],
+      spots: [R.CARD_BUTTONS, R.FORM, R.BANNER]
+    },
+    // ================================
+    // PROBLEMA 7: Formulario largo y cognitivamente exigente
+    // ================================
+    {
+      title: "Formulario largo y cognitivamente exigente",
+      problem: [
+        "El formulario incluye múltiples campos (Espacio, Tipo de actividad, Fechas, Horario, Público estimado, Necesidades técnicas, Adjuntar archivo), pero no se agrupan en pasos, no se presentan ayudas contextuales y no hay indicación clara de progreso."
+      ],
+      why: [
+        "Se incrementa la carga cognitiva.",
+        "Se dificulta la completitud.",
+        "Se incrementa el riesgo de abandono."
+      ],
+      fix: [
+        "Dividir el formulario en pasos.",
+        "Agrupar los campos por bloques.",
+        "Incluir ayudas contextuales.",
+        "Reducir campos opcionales."
+      ],
+      spots: [R.FORM]
+    },
+    // ================================
+    // PROBLEMA 8: Falta de feedback y claridad en el proceso de reserva
+    // ================================
+    {
+      title: "Falta de feedback y claridad en el proceso de reserva",
+      problem: [
+        "Se menciona que la solicitud se responde en 5 días, pero no se explica qué ocurre tras enviar el formulario, si hay confirmación inmediata y si la reserva es automática o manual."
+      ],
+      why: [
+        "Falta de visibilidad del estado del sistema.",
+        "Genera incertidumbre en el usuario.",
+        "Genera pérdida de confianza."
+      ],
+      fix: [
+        "Explicar qué ocurre tras enviar la solicitud.",
+        "Explicar el tiempo de respuesta y los próximos pasos.",
+        "Incluir confirmación inmediata.",
+        "Incluir mensajes de estado claros."
+      ],
+      spots: [R.FORM_SUBMIT, R.FORM_NOTE]
+    },
+    // ================================
+    // PROBLEMA 9: Elementos secundarios compiten con la tarea principal
+    // ================================
+    {
+      title: "Elementos secundarios compiten con la tarea principal",
+      problem: [
+        "El bloque \"¿No encuentras lo que buscas?\" aparece en la parte inferior con bastante peso visual, pero no está claro cuándo usarlo y compite con el formulario principal."
+      ],
+      why: [
+        "Genera distracción.",
+        "Genera ruido en la toma de decisiones."
+      ],
+      fix: [
+        "Integrar elementos como \"Cuéntanos tu idea\" como alternativa secundaria.",
+        "Hacer que aparezcan en contexto para que no compitan con la tarea principal."
+      ],
+      spots: [R.BANNER]
+    },
+    // ================================
+    // PROBLEMA 10: Problemas de accesibilidad y claridad
+    // ================================
+    {
+      title: "Problemas de accesibilidad y claridad",
+      problem: [
+        "Contrastes suaves en filtros y etiquetas.",
+        "Uso de iconos como único apoyo en algunos datos.",
+        "Densidad alta de información en tarjetas."
+      ],
+      why: [
+        "Genera dificultades de uso para determinados perfiles.",
+        "Genera pérdida de legibilidad."
+      ],
+      fix: [
+        "Aumentar el contraste.",
+        "Reducir la densidad de información.",
+        "Usar un equilibrio entre texto e iconos.",
+        "Mejorar los tamaños tipográficos."
+      ],
+      spots: [R.FILTERS, R.CARDS]
+    }
+  ];
+
+  const content = document.getElementById('infoContent');
+  const infoNav = document.getElementById('infoNav');
+  const spotlights = document.getElementById('spotlights');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const counterCurrent = document.getElementById('counterCurrent');
+  const navFill = document.getElementById('navFill');
+  document.getElementById('counterTotal').textContent = SLIDES.length;
+
+  let index = -1; // -1 = pantalla de inicio
+
+  function bulletList(items) {
+    return `<ul class="bullets">${items.map(t => `<li>${t}</li>`).join('')}</ul>`;
+  }
+
+  // Genera los rectángulos oscuros que quedan tras "recortar" los huecos
+  // (spots) del lienzo completo, usando una descomposición en rejilla.
+  // Evita depender de mask-image/clip-path, que no se pintan de forma
+  // fiable en todos los motores de render para huecos múltiples.
+  function darkRects(spots) {
+    const xs = new Set([0, 100]);
+    const ys = new Set([0, 100]);
+    spots.forEach(r => {
+      xs.add(r.x); xs.add(r.x + r.w);
+      ys.add(r.y); ys.add(r.y + r.h);
+    });
+    const xsArr = [...xs].sort((a, b) => a - b);
+    const ysArr = [...ys].sort((a, b) => a - b);
+
+    const rects = [];
+    for (let i = 0; i < xsArr.length - 1; i++) {
+      for (let j = 0; j < ysArr.length - 1; j++) {
+        const x0 = xsArr[i], x1 = xsArr[i + 1];
+        const y0 = ysArr[j], y1 = ysArr[j + 1];
+        const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+        const insideHole = spots.some(r =>
+          cx >= r.x && cx <= r.x + r.w && cy >= r.y && cy <= r.y + r.h
+        );
+        if (!insideHole) rects.push({ x: x0, y: y0, w: x1 - x0, h: y1 - y0 });
+      }
+    }
+    return rects;
+  }
+
+  function renderDim() {
+    spotlights.innerHTML = '';
+    const spots = index >= 0 ? SLIDES[index].spots : [];
+
+    if (index >= 0) {
+      darkRects(spots).forEach(r => {
+        const el = document.createElement('div');
+        el.className = 'dim';
+        el.style.left = r.x + '%';
+        el.style.top = r.y + '%';
+        el.style.width = r.w + '%';
+        el.style.height = r.h + '%';
+        spotlights.appendChild(el);
+      });
+
+      spots.forEach(r => {
+        const el = document.createElement('div');
+        el.className = 'spot';
+        el.style.left = r.x + '%';
+        el.style.top = r.y + '%';
+        el.style.width = r.w + '%';
+        el.style.height = r.h + '%';
+        spotlights.appendChild(el);
+      });
+    }
+  }
+
+  function renderIntro() {
+    infoNav.hidden = true;
+    renderDim();
+    content.innerHTML = `
+      <div class="intro">
+        <p class="intro__text">Comienza navegando en el recurso</p>
+        <button class="intro__btn" id="startBtn">Iniciar</button>
+      </div>
+    `;
+    document.getElementById('startBtn').addEventListener('click', () => goTo(0));
+  }
+
+  function renderSlide() {
+    infoNav.hidden = false;
+    const s = SLIDES[index];
+    renderDim();
+
+    content.innerHTML = `
+      <div class="slide">
+        <h2 class="slide__title">${index + 1}/ ${s.title}</h2>
+
+        <div class="card card--bad" id="cardBad">
+          <div class="card__head">
+            <div class="card__head-main">
+              <span class="card__bar"></span>
+              <span class="card__label">Qué es incorrecto</span>
+            </div>
+          </div>
+          <div class="card__body">
+            ${bulletList(s.problem)}
+            <hr class="card__divider" />
+            <p class="card__subhead">Por qué es un problema:</p>
+            ${bulletList(s.why)}
+          </div>
+        </div>
+
+        <button class="reveal-btn" id="revealBtn">¿Qué es correcto? <img class="chev" src="../../Recursos/iconos/arrow-right-solid-full.svg" alt="" /></button>
+
+        <div class="card card--good" id="cardGood" hidden>
+          <div class="card__head">
+            <div class="card__head-main">
+              <span class="card__bar"></span>
+              <span class="card__label">Qué es correcto</span>
+            </div>
+          </div>
+          <div class="card__body">
+            ${bulletList(s.fix)}
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('revealBtn').addEventListener('click', reveal);
+
+    counterCurrent.textContent = index + 1;
+    navFill.style.width = ((index + 1) / SLIDES.length * 100) + '%';
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === SLIDES.length - 1;
+  }
+
+  function reveal() {
+    const revealBtn = document.getElementById('revealBtn');
+    const cardBad = document.getElementById('cardBad');
+    const cardGood = document.getElementById('cardGood');
+
+    revealBtn.remove();
+    cardGood.hidden = false;
+    cardBad.classList.add('is-collapsed');
+
+    [cardBad, cardGood].forEach(card => {
+      const head = card.querySelector('.card__head');
+      head.classList.add('is-toggle');
+      const chevron = document.createElement('button');
+      chevron.className = 'card__chevron';
+      chevron.type = 'button';
+      chevron.setAttribute('aria-label', 'Mostrar u ocultar');
+      chevron.innerHTML = '<img src="../../Recursos/iconos/angle-down-solid-full.svg" alt="" />';
+      chevron.addEventListener('click', () => card.classList.toggle('is-collapsed'));
+      head.appendChild(chevron);
+    });
+  }
+
+  function goTo(i) {
+    index = Math.max(0, Math.min(SLIDES.length - 1, i));
+    renderSlide();
+  }
+
+  prevBtn.addEventListener('click', () => goTo(index - 1));
+  nextBtn.addEventListener('click', () => goTo(index + 1));
+  document.addEventListener('keydown', e => {
+    if (index < 0) return;
+    if (e.key === 'ArrowRight') goTo(index + 1);
+    if (e.key === 'ArrowLeft') goTo(index - 1);
+  });
+
+  renderIntro();
+</script>
+
+</body>
+</html>

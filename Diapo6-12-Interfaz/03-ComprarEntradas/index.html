@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Comprar entradas — La Fábrica Abierta | Análisis de usabilidad</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app">
+
+  <section class="stage" aria-hidden="true">
+    <div class="frame" id="frame">
+      <img class="frame__img" src="../../Recursos/Imagenes/CentroCulturalFábricaAbierta/6. Comprar entradas.png" alt="Página de compra de entradas de La Fábrica Abierta" draggable="false" />
+      <div class="spotlights" id="spotlights"></div>
+    </div>
+  </section>
+
+  <aside class="info">
+    <div class="info__content" id="infoContent"></div>
+    <nav class="info__nav" id="infoNav" hidden>
+      <div class="nav__progress">
+        <span class="nav__counter"><strong id="counterCurrent">1</strong>/<span id="counterTotal">10</span></span>
+        <div class="nav__bar"><div class="nav__fill" id="navFill"></div></div>
+      </div>
+      <div class="nav__buttons">
+        <button class="navbtn" id="prevBtn" aria-label="Problema anterior">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="navbtn" id="nextBtn" aria-label="Problema siguiente">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+</div>
+
+<script>
+  // Regiones reutilizables de la captura "Compra de entradas" (1536x1024)
+  const R = {
+    STEPS:          { x: 6.7,  y: 20.5, w: 59.1, h: 3.5 },
+    TIMER:          { x: 6.7,  y: 25.5, w: 59.3, h: 5.5 },
+    TICKETS_TABLE:  { x: 6.7,  y: 33.5, w: 30.9, h: 30 },
+    FORM_DATOS:     { x: 39.7, y: 33.5, w: 26.4, h: 28.5 },
+    PAYMENT:        { x: 6.7,  y: 65,   w: 59.4, h: 18.5 },
+    PAYMENT_CARD:   { x: 6.7,  y: 68,   w: 43.4, h: 14 },
+    PAYMENT_ALT:    { x: 52.1, y: 68,   w: 14,   h: 14 },
+    LEFT_ZONE:      { x: 6.7,  y: 33.5, w: 59.4, h: 50 },
+    SUMMARY_BOX:    { x: 70.4, y: 16.6, w: 23.9, h: 60.1 },
+    LEGAL_INFO:     { x: 70.4, y: 52,   w: 23.9, h: 11 },
+    CHECKBOX_LEGAL: { x: 70.4, y: 65,   w: 23.9, h: 2.5 },
+    CTA_MAIN:       { x: 70.4, y: 67,   w: 23.9, h: 4.5 },
+    CANCEL_LINK:    { x: 70.4, y: 72.5, w: 23.9, h: 2.5 }
+  };
+
+  const SLIDES = [
+    // ================================
+    // PROBLEMA 1: Sobrecarga cognitiva por concentración excesiva de información
+    // ================================
+    {
+      title: "Sobrecarga cognitiva por concentración excesiva de información",
+      problem: [
+        "La interfaz presenta en una única pantalla la selección de entradas, el formulario de datos personales, la selección de método de pago y el resumen de la compra como un proceso por pasos (1–4), pero todos los elementos aparecen simultáneamente."
+      ],
+      why: [
+        "Se rompe el principio de progresividad.",
+        "Se incrementa la carga cognitiva de forma notable.",
+        "El usuario no percibe claramente en qué fase está."
+      ],
+      fix: [
+        "Dividir el proceso en pantallas o etapas claras: selección de entradas, datos personales, pago y confirmación, para reducir la carga cognitiva y alinear el indicador con el comportamiento real."
+      ],
+      spots: [R.TICKETS_TABLE, R.FORM_DATOS, R.PAYMENT, R.SUMMARY_BOX]
+    },
+    // ================================
+    // PROBLEMA 2: Falsa estructura del proceso paso a paso
+    // ================================
+    {
+      title: "Falsa estructura del proceso paso a paso",
+      problem: [
+        "Se incluye un indicador de pasos, pero el contenido no está dividido realmente en pasos."
+      ],
+      why: [
+        "El indicador no refleja el comportamiento real del sistema.",
+        "Se genera una expectativa que no se cumple.",
+        "Se incumple la heurística de consistencia y estándares."
+      ],
+      fix: [
+        "Dividir el proceso en pantallas o etapas claras (selección de entradas, datos personales, pago y confirmación) para alinear el indicador con el comportamiento real del sistema."
+      ],
+      spots: [R.STEPS]
+    },
+    // ================================
+    // PROBLEMA 3: Temporizador que genera ansiedad y presión innecesaria
+    // ================================
+    {
+      title: "Temporizador que genera ansiedad y presión innecesaria",
+      problem: [
+        "El mensaje \"Tiempo para completar tu compra: 09:34 min\" aparece destacado en la parte superior."
+      ],
+      why: [
+        "Introduce presión sin explicar claramente sus consecuencias.",
+        "Puede generar ansiedad en el usuario.",
+        "No indica qué ocurre exactamente cuando el tiempo finaliza.",
+        "Afecta negativamente a la experiencia y a la confianza."
+      ],
+      fix: [
+        "Eliminar el temporizador o explicarlo claramente.",
+        "Incluir feedback visual del progreso.",
+        "Incluir una acción clara al agotarse el tiempo."
+      ],
+      spots: [R.TIMER]
+    },
+    // ================================
+    // PROBLEMA 4: Organización confusa de la información en bloques
+    // ================================
+    {
+      title: "Organización confusa de la información en bloques",
+      problem: [
+        "La interfaz separa la información en dos zonas: a la izquierda el proceso (entradas, datos, pago) y a la derecha el resumen de la compra."
+      ],
+      why: [
+        "No hay una relación clara visual entre ambas.",
+        "El resumen no se actualiza o no se percibe como interactivo.",
+        "El usuario debe alternar la atención constantemente.",
+        "Genera fricción en la comprensión del sistema."
+      ],
+      fix: [
+        "Hacer que el resumen se actualice claramente en tiempo real.",
+        "Hacer que el resumen destaque los cambios visualmente.",
+        "Hacer que el resumen mantenga coherencia con la selección."
+      ],
+      spots: [R.LEFT_ZONE, R.SUMMARY_BOX]
+    },
+    // ================================
+    // PROBLEMA 5: Selección de entradas poco clara en su comportamiento
+    // ================================
+    {
+      title: "Selección de entradas poco clara en su comportamiento",
+      problem: [
+        "El selector de cantidad incluye botones de incremento y decremento y subtotal por línea."
+      ],
+      why: [
+        "No hay feedback claro de cambio (animación, actualización evidente).",
+        "No se destaca el total en ese momento.",
+        "La relación entre selección y resumen no es evidente.",
+        "Esto afecta a la visibilidad del estado del sistema."
+      ],
+      fix: [
+        "Hacer que el resumen se actualice claramente en tiempo real.",
+        "Hacer que el resumen destaque los cambios visualmente.",
+        "Hacer que el resumen mantenga coherencia con la selección."
+      ],
+      spots: [R.TICKETS_TABLE]
+    },
+    // ================================
+    // PROBLEMA 6: Formulario de datos mal estructurado
+    // ================================
+    {
+      title: "Formulario de datos mal estructurado",
+      problem: [
+        "El formulario incluye múltiples campos: nombre, apellidos, email, teléfono, documento de identidad, país y código postal."
+      ],
+      why: [
+        "Los campos están organizados en dos columnas sin lógica clara.",
+        "No hay agrupación semántica (identidad, contacto, localización).",
+        "No se proporcionan ayudas contextuales.",
+        "Genera mayor esfuerzo cognitivo.",
+        "Genera errores potenciales en la introducción de datos."
+      ],
+      fix: [
+        "Agrupar el formulario en datos personales, datos de contacto e información adicional.",
+        "Presentar el formulario en una columna única para facilitar la lectura."
+      ],
+      spots: [R.FORM_DATOS]
+    },
+    // ================================
+    // PROBLEMA 7: Métodos de pago mal priorizados y poco claros
+    // ================================
+    {
+      title: "Métodos de pago mal priorizados y poco claros",
+      problem: [
+        "La sección de pago presenta tarjeta (con campos completos visibles), PayPal, transferencia y Bizum, pero la tarjeta aparece como opción por defecto sin explicación, las alternativas no tienen suficiente contexto y no se explica cuándo se seleccionan o cómo cambian los campos."
+      ],
+      why: [
+        "Genera confusión en la interacción.",
+        "Genera una falta de control percibido."
+      ],
+      fix: [
+        "Mostrar solo los campos del método seleccionado.",
+        "Explicar cada opción.",
+        "Destacar claramente la selección activa."
+      ],
+      spots: [R.PAYMENT_CARD, R.PAYMENT_ALT]
+    },
+    // ================================
+    // PROBLEMA 8: CTA principal poco contextualizado dentro del flujo
+    // ================================
+    {
+      title: "CTA principal poco contextualizado dentro del flujo",
+      problem: [
+        "El botón \"Continuar con el pago\" aparece en el lateral derecho, asociado al resumen."
+      ],
+      why: [
+        "No está alineado con el flujo de rellenar el formulario.",
+        "Puede no percibirse como el siguiente paso natural.",
+        "Su ubicación puede hacer que el usuario lo ignore inicialmente."
+      ],
+      fix: [
+        "Hacer que el CTA aparezca al final del flujo de lectura.",
+        "Hacer que el CTA esté alineado con la sección activa.",
+        "Hacer que el CTA sea claramente identificable como acción siguiente."
+      ],
+      spots: [R.PAYMENT, R.CTA_MAIN]
+    },
+    // ================================
+    // PROBLEMA 9: Información legal y condiciones mal ubicadas
+    // ================================
+    {
+      title: "Información legal y condiciones mal ubicadas",
+      problem: [
+        "El usuario debe aceptar condiciones de compra, pero el checkbox aparece junto al CTA sin preparación previa, y la información legal aparece en un bloque separado (\"Información importante\")."
+      ],
+      why: [
+        "Genera falta de claridad en el momento de decisión.",
+        "Genera un posible rechazo o duda en el usuario."
+      ],
+      fix: [
+        "Explicar las condiciones antes del momento de aceptación.",
+        "Relacionar las condiciones con el contexto del pago.",
+        "Presentar las condiciones de forma más clara y accesible."
+      ],
+      spots: [R.LEGAL_INFO, R.CHECKBOX_LEGAL]
+    },
+    // ================================
+    // PROBLEMA 10: Falta de feedback y validación en tiempo real
+    // ================================
+    {
+      title: "Falta de feedback y validación en tiempo real",
+      problem: [
+        "No se observa validación visible de campos.",
+        "No se observan mensajes de error.",
+        "No se observan indicadores de progreso en el formulario."
+      ],
+      why: [
+        "Genera riesgo de errores acumulados.",
+        "Genera frustración en el usuario al enviar el formulario."
+      ],
+      fix: [
+        "Introducir validaciones en tiempo real.",
+        "Introducir mensajes de error claros.",
+        "Introducir indicadores de campos correctos."
+      ],
+      spots: [R.FORM_DATOS]
+    },
+    // ================================
+    // PROBLEMA 11: Inconsistencia en la cancelación del proceso
+    // ================================
+    {
+      title: "Inconsistencia en la cancelación del proceso",
+      problem: [
+        "El enlace \"Cancelar compra\" es secundario y poco visible.",
+        "Cancelar es una acción relevante pero no se explica qué ocurre al hacerlo."
+      ],
+      why: [
+        "Afecta el control y libertad del usuario."
+      ],
+      fix: [
+        "Mejorar la visibilidad del botón de cancelar.",
+        "Explicar las consecuencias de la cancelación.",
+        "Permitir navegación clara entre pasos."
+      ],
+      spots: [R.CANCEL_LINK]
+    },
+    // ================================
+    // PROBLEMA 12: Problemas de accesibilidad
+    // ================================
+    {
+      title: "Problemas de accesibilidad",
+      problem: [
+        "Contraste bajo en textos secundarios.",
+        "Tamaño reducido en algunos campos.",
+        "Uso intensivo de campos en dos columnas.",
+        "Dependencia visual del layout más que de la estructura."
+      ],
+      why: [
+        "Dificulta la interacción para ciertos perfiles de usuario."
+      ],
+      fix: [
+        "Aplicar mayor contraste.",
+        "Aumentar tamaños tipográficos.",
+        "Simplificar el layout.",
+        "Reducir el uso de columnas múltiples."
+      ],
+      spots: [R.FORM_DATOS, R.PAYMENT]
+    }
+  ];
+
+  const content = document.getElementById('infoContent');
+  const infoNav = document.getElementById('infoNav');
+  const spotlights = document.getElementById('spotlights');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const counterCurrent = document.getElementById('counterCurrent');
+  const navFill = document.getElementById('navFill');
+  document.getElementById('counterTotal').textContent = SLIDES.length;
+
+  let index = -1; // -1 = pantalla de inicio
+
+  function bulletList(items) {
+    return `<ul class="bullets">${items.map(t => `<li>${t}</li>`).join('')}</ul>`;
+  }
+
+  // Genera los rectángulos oscuros que quedan tras "recortar" los huecos
+  // (spots) del lienzo completo, usando una descomposición en rejilla.
+  // Evita depender de mask-image/clip-path, que no se pintan de forma
+  // fiable en todos los motores de render para huecos múltiples.
+  function darkRects(spots) {
+    const xs = new Set([0, 100]);
+    const ys = new Set([0, 100]);
+    spots.forEach(r => {
+      xs.add(r.x); xs.add(r.x + r.w);
+      ys.add(r.y); ys.add(r.y + r.h);
+    });
+    const xsArr = [...xs].sort((a, b) => a - b);
+    const ysArr = [...ys].sort((a, b) => a - b);
+
+    const rects = [];
+    for (let i = 0; i < xsArr.length - 1; i++) {
+      for (let j = 0; j < ysArr.length - 1; j++) {
+        const x0 = xsArr[i], x1 = xsArr[i + 1];
+        const y0 = ysArr[j], y1 = ysArr[j + 1];
+        const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+        const insideHole = spots.some(r =>
+          cx >= r.x && cx <= r.x + r.w && cy >= r.y && cy <= r.y + r.h
+        );
+        if (!insideHole) rects.push({ x: x0, y: y0, w: x1 - x0, h: y1 - y0 });
+      }
+    }
+    return rects;
+  }
+
+  function renderDim() {
+    spotlights.innerHTML = '';
+    const spots = index >= 0 ? SLIDES[index].spots : [];
+
+    if (index >= 0) {
+      darkRects(spots).forEach(r => {
+        const el = document.createElement('div');
+        el.className = 'dim';
+        el.style.left = r.x + '%';
+        el.style.top = r.y + '%';
+        el.style.width = r.w + '%';
+        el.style.height = r.h + '%';
+        spotlights.appendChild(el);
+      });
+
+      spots.forEach(r => {
+        const el = document.createElement('div');
+        el.className = 'spot';
+        el.style.left = r.x + '%';
+        el.style.top = r.y + '%';
+        el.style.width = r.w + '%';
+        el.style.height = r.h + '%';
+        spotlights.appendChild(el);
+      });
+    }
+  }
+
+  function renderIntro() {
+    infoNav.hidden = true;
+    renderDim();
+    content.innerHTML = `
+      <div class="intro">
+        <p class="intro__text">Comienza navegando en el recurso</p>
+        <button class="intro__btn" id="startBtn">Iniciar</button>
+      </div>
+    `;
+    document.getElementById('startBtn').addEventListener('click', () => goTo(0));
+  }
+
+  function renderSlide() {
+    infoNav.hidden = false;
+    const s = SLIDES[index];
+    renderDim();
+
+    content.innerHTML = `
+      <div class="slide">
+        <h2 class="slide__title">${index + 1}/ ${s.title}</h2>
+
+        <div class="card card--bad" id="cardBad">
+          <div class="card__head">
+            <div class="card__head-main">
+              <span class="card__bar"></span>
+              <span class="card__label">Qué es incorrecto</span>
+            </div>
+          </div>
+          <div class="card__body">
+            ${bulletList(s.problem)}
+            <hr class="card__divider" />
+            <p class="card__subhead">Por qué es un problema:</p>
+            ${bulletList(s.why)}
+          </div>
+        </div>
+
+        <button class="reveal-btn" id="revealBtn">¿Qué es correcto? <img class="chev" src="../../Recursos/iconos/arrow-right-solid-full.svg" alt="" /></button>
+
+        <div class="card card--good" id="cardGood" hidden>
+          <div class="card__head">
+            <div class="card__head-main">
+              <span class="card__bar"></span>
+              <span class="card__label">Qué es correcto</span>
+            </div>
+          </div>
+          <div class="card__body">
+            ${bulletList(s.fix)}
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('revealBtn').addEventListener('click', reveal);
+
+    counterCurrent.textContent = index + 1;
+    navFill.style.width = ((index + 1) / SLIDES.length * 100) + '%';
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === SLIDES.length - 1;
+  }
+
+  function reveal() {
+    const revealBtn = document.getElementById('revealBtn');
+    const cardBad = document.getElementById('cardBad');
+    const cardGood = document.getElementById('cardGood');
+
+    revealBtn.remove();
+    cardGood.hidden = false;
+    cardBad.classList.add('is-collapsed');
+
+    [cardBad, cardGood].forEach(card => {
+      const head = card.querySelector('.card__head');
+      head.classList.add('is-toggle');
+      const chevron = document.createElement('button');
+      chevron.className = 'card__chevron';
+      chevron.type = 'button';
+      chevron.setAttribute('aria-label', 'Mostrar u ocultar');
+      chevron.innerHTML = '<img src="../../Recursos/iconos/angle-down-solid-full.svg" alt="" />';
+      chevron.addEventListener('click', () => card.classList.toggle('is-collapsed'));
+      head.appendChild(chevron);
+    });
+  }
+
+  function goTo(i) {
+    index = Math.max(0, Math.min(SLIDES.length - 1, i));
+    renderSlide();
+  }
+
+  prevBtn.addEventListener('click', () => goTo(index - 1));
+  nextBtn.addEventListener('click', () => goTo(index + 1));
+  document.addEventListener('keydown', e => {
+    if (index < 0) return;
+    if (e.key === 'ArrowRight') goTo(index + 1);
+    if (e.key === 'ArrowLeft') goTo(index - 1);
+  });
+
+  renderIntro();
+</script>
+
+</body>
+</html>

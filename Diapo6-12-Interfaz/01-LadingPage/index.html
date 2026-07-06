@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>La Fábrica Abierta — Landing page | Análisis de usabilidad</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app">
+
+  <section class="stage" aria-hidden="true">
+    <div class="frame" id="frame">
+      <img class="frame__img" src="../../Recursos/Imagenes/Diapo6/1. LandingPage.png" alt="Landing page de La Fábrica Abierta" draggable="false" />
+      <div class="spotlights" id="spotlights"></div>
+    </div>
+  </section>
+
+  <aside class="info">
+    <div class="info__content" id="infoContent"></div>
+    <nav class="info__nav" id="infoNav" hidden>
+      <div class="nav__progress">
+        <span class="nav__counter"><strong id="counterCurrent">1</strong>/<span id="counterTotal">10</span></span>
+        <div class="nav__bar"><div class="nav__fill" id="navFill"></div></div>
+      </div>
+      <div class="nav__buttons">
+        <button class="navbtn" id="prevBtn" aria-label="Problema anterior">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="navbtn" id="nextBtn" aria-label="Problema siguiente">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+</div>
+
+<script>
+  const SLIDES = [
+    // ================================
+    // PROBLEMA 1: Navegación sobrecargada
+    // ================================
+    {
+      title: "Navegación principal sobrecargada y poco jerarquizada",
+      problem: [
+        "El menú superior incluye demasiadas opciones: Programación, Exposiciones, Cine, Música, Talleres, Labs, Convocatorias, Residencias, Espacios, Archivo, Sobre LFA.",
+        "No hay agrupación ni jerarquía clara, todo está al mismo nivel."
+      ],
+      why: [
+        "No cumple la heurística de Nielsen de reconocer vs recordar.",
+        "Genera sobrecarga cognitiva.",
+        "Dificulta entender por dónde empezar."
+      ],
+      fix: [
+        "Usar menús desplegables.",
+        "Agrupar entre 4 y 6 categorías como máximo: Programación, Visita, Participa (convocatorias, residencias), Espacios, Archivo."
+      ],
+      spots: [{ x: 0, y: 0, w: 100, h: 8.50 }]
+    },
+    // ================================
+    // PROBLEMA 2: Falta de foco en la acción principal
+    // ================================
+    {
+      title: "Falta de foco en la acción principal",
+      problem: [
+        "El banner principal tiene un CTA: \"Más información\" (genérico).",
+        "En paralelo hay múltiples acciones compitiendo: agenda lateral, tarjetas inferiores y el CTA de la newsletter."
+      ],
+      why: [
+        "No cumple con los principios de jerarquía visual y diseño minimalista.",
+        "El usuario no sabe cuál es la acción principal.",
+        "El CTA está poco orientado a la tarea, el usuario no sabe qué debe hacer."
+      ],
+      fix: [
+        "Escribir CTAs orientados a la acción (\"Ver agenda\", \"Explorar eventos\").",
+        "Reducir competencia visual alrededor."
+      ],
+      spots: [
+        { x: 3.13, y: 38, w: 17, h: 5 },
+        { x: 75.91, y: 8, w: 24.09, h: 38 },
+        { x: 0, y: 81, w: 100, h: 6.5 }
+      ]
+    },
+    // ================================
+    // PROBLEMA 3: Exceso de estímulos y sobrecarga cognitiva
+    // ================================
+    {
+      title: "Exceso de estímulos y sobrecarga cognitiva",
+      problem: [
+        "Hero page + agenda lateral + grid de 4 módulos + texto institucional + footer + newsletter.",
+        "Muchos bloques con importancia similar."
+      ],
+      why: [
+        "No cumple con la heurística de Nielsen de diseño estético y minimalista.",
+        "Dificulta el escaneo rápido.",
+        "El usuario no prioriza información."
+      ],
+      fix: [
+        "Priorizar sólo 2 o 3 bloques clave.",
+        "Eliminar las tarjetas o agruparlas."
+      ],
+      spots: [{ x: 0, y: 8.5, w: 100, h: 91.6 }]
+    },
+    // ================================
+    // PROBLEMA 4: Agenda lateral difícil de escanear
+    // ================================
+    {
+      title: "Agenda lateral difícil de escanear",
+      problem: [
+        "El CTA \"Ver agenda completa\" es poco visible.",
+        "Contraste débil en las categorías de eventos.",
+        "Jerarquía poco clara: todo pesa igual.",
+        "Falta de affordance clara; el usuario no reconoce dónde hacer clic."
+      ],
+      why: [
+        "No cumple con la heurística de Nielsen de visibilidad del estado / jerarquía.",
+        "Complica el recorrido cognitivo del usuario que quiere ver qué hacer hoy."
+      ],
+      fix: [
+        "Mejor jerarquía: título evento > hora > tipo.",
+        "Añadir botones claros y mejor contraste.",
+        "CTA destacado: \"Ver agenda completa\"."
+      ],
+      spots: [{ x: 75.91, y: 8, w: 24.09, h: 38  }]
+    },
+    // ================================
+    // PROBLEMA 5: Inconsistencia en los CTAs
+    // ================================
+    {
+      title: "Inconsistencia en los CTAs",
+      problem: [
+        "\"Más información\", \"Bases y condiciones\", \"Ver programa\", \"Ir al archivo\", \"Ver espacios\".",
+        "Cinco patrones distintos de llamada a la acción conviviendo en la misma página."
+      ],
+      why: [
+        "No cumple con la heurística de Nielsen de consistencia y estándares.",
+        "Falta de patrón claro de interacción.",
+        "Genera inseguridad y esfuerzo cognitivo."
+      ],
+      fix: [
+        "Usar patrón consistente: \"Ver más\", \"Ver evento\", \"Explorar\".",
+        "Mantener un estilo visual uniforme."
+      ],
+      spots: [
+        { x: 3.13, y: 38, w: 17, h: 5 },
+        { x: 0, y: 74.22, w: 23.44, h: 4 },
+        { x: 23.44, y: 74.22, w: 17.71, h: 4 },
+        { x: 41.15, y: 74.22, w: 17.70, h: 4},
+        { x: 58.85, y: 74.22, w: 18.23, h: 4 },
+        { x: 77.08, y: 74.22, w: 22.92, h: 4 }
+      ]
+    },
+    // ================================
+    // PROBLEMA 6: Problemas de etiquetado
+    // ================================
+    {
+      title: "Problemas de etiquetado",
+      problem: [
+        "Naming ambiguo: \"Labs\", \"Archivo\", \"Convocatorias\", \"Residencias\".",
+        "No es un lenguaje claro para el público general."
+      ],
+      why: [
+        "No cumple con la heurística de Nielsen de relación sistema–mundo real.",
+        "Requiere conocimiento previo del sector cultural para entender el lenguaje."
+      ],
+      fix: [
+        "Sustituir términos ambiguos (\"Labs\" → \"Laboratorios\", \"Archivo\" → \"Archivo digital\").",
+        "Añadir microcopy explicativo."
+      ],
+      spots: [
+        { x: 57.29, y: 0, w: 19, h: 8.50 },
+        { x: 82, y: 0, w: 6, h: 8.50 }
+      ]
+    },
+    // ================================
+    // PROBLEMA 7: Grid de contenidos inferiores mal priorizado
+    // ================================
+    {
+      title: "Grid de contenidos inferiores mal priorizado",
+      problem: [
+        "Hay cuatro módulos distintos: Residencias, Evento puntual, Archivo y Espacios.",
+        "Todos los módulos compiten visualmente."
+      ],
+      why: [
+        "No hay jerarquía clara.",
+        "Mezcla tipos de contenido (evento, servicio, archivo).",
+        "Dificulta la decisión del usuario."
+      ],
+      fix: [
+        "Separar por propósito: eventos, convocatorias, espacios.",
+        "No mezclar en el mismo nivel."
+      ],
+      spots: [{ x: 0, y: 46.68, w: 100, h: 31.93 }]
+    },
+    // ================================
+    // PROBLEMA 8: Falta de orientación
+    // ================================
+    {
+      title: "Falta de orientación",
+      problem: [
+        "El usuario no entiende dónde está.",
+        "No hay indicación de sección activa."
+      ],
+      why: [
+        "No cumple con la heurística de Nielsen de visibilidad del estado del sistema.",
+        "Empeora la navegación exploratoria."
+      ],
+      fix: [
+        "Marcar sección activa.",
+        "Añadir breadcrumbs en navegación interna."
+      ],
+      spots: [{ x: 0, y: 0, w: 100, h: 8 }]
+    },
+    // ================================
+    // PROBLEMA 9: Newsletter intrusiva y mal integrada
+    // ================================
+    {
+      title: "Newsletter intrusiva y mal integrada",
+      problem: [
+        "Aparece justo antes del footer.",
+        "No está contextualizada."
+      ],
+      why: [
+        "Interrumpe el flujo de navegación.",
+        "Falta de valor claro en ese punto."
+      ],
+      fix: [
+        "Integrarla en contexto (por ejemplo, junto a la agenda).",
+        "Añadir valor: \"Recibe planes semanales\"."
+      ],
+      spots: [{ x: 0, y: 80, w: 100, h: 7.5 }]
+    },
+    // ================================
+    // PROBLEMA 10: Posibles problemas de accesibilidad
+    // ================================
+    {
+      title: "Posibles problemas de accesibilidad",
+      problem: [
+        "Contraste bajo en algunos textos (gris claro).",
+        "Texto pequeño en agenda y footer.",
+        "Uso del color como único diferenciador para las categorías."
+      ],
+      why: [
+        "Excluye a usuarios con baja visión o dificultades para distinguir colores."
+      ],
+      fix: [
+        "Aumentar el contraste.",
+        "Usar tamaños mínimos accesibles.",
+        "No depender solo del color."
+      ],
+      spots: [
+        { x: 75.91, y: 8, w: 24.09, h: 38  },
+        { x: 0, y: 88, w: 100, h: 9 }
+      ]
+    }
+  ];
+
+  const content = document.getElementById('infoContent');
+  const infoNav = document.getElementById('infoNav');
+  const spotlights = document.getElementById('spotlights');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const counterCurrent = document.getElementById('counterCurrent');
+  const navFill = document.getElementById('navFill');
+  document.getElementById('counterTotal').textContent = SLIDES.length;
+
+  let index = -1; // -1 = pantalla de inicio
+
+  function bulletList(items) {
+    return `<ul class="bullets">${items.map(t => `<li>${t}</li>`).join('')}</ul>`;
+  }
+
+  // Genera los rectángulos oscuros que quedan tras "recortar" los huecos
+  // (spots) del lienzo completo, usando una descomposición en rejilla.
+  // Evita depender de mask-image/clip-path, que no se pintan de forma
+  // fiable en todos los motores de render para huecos múltiples.
+  function darkRects(spots) {
+    const xs = new Set([0, 100]);
+    const ys = new Set([0, 100]);
+    spots.forEach(r => {
+      xs.add(r.x); xs.add(r.x + r.w);
+      ys.add(r.y); ys.add(r.y + r.h);
+    });
+    const xsArr = [...xs].sort((a, b) => a - b);
+    const ysArr = [...ys].sort((a, b) => a - b);
+
+    const rects = [];
+    for (let i = 0; i < xsArr.length - 1; i++) {
+      for (let j = 0; j < ysArr.length - 1; j++) {
+        const x0 = xsArr[i], x1 = xsArr[i + 1];
+        const y0 = ysArr[j], y1 = ysArr[j + 1];
+        const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+        const insideHole = spots.some(r =>
+          cx >= r.x && cx <= r.x + r.w && cy >= r.y && cy <= r.y + r.h
+        );
+        if (!insideHole) rects.push({ x: x0, y: y0, w: x1 - x0, h: y1 - y0 });
+      }
+    }
+    return rects;
+  }
+
+  function renderDim() {
+    spotlights.innerHTML = '';
+    const spots = index >= 0 ? SLIDES[index].spots : [];
+
+    if (index >= 0) {
+      darkRects(spots).forEach(r => {
+        const el = document.createElement('div');
+        el.className = 'dim';
+        el.style.left = r.x + '%';
+        el.style.top = r.y + '%';
+        el.style.width = r.w + '%';
+        el.style.height = r.h + '%';
+        spotlights.appendChild(el);
+      });
+
+      spots.forEach(r => {
+        const el = document.createElement('div');
+        el.className = 'spot';
+        el.style.left = r.x + '%';
+        el.style.top = r.y + '%';
+        el.style.width = r.w + '%';
+        el.style.height = r.h + '%';
+        spotlights.appendChild(el);
+      });
+    }
+  }
+
+  function renderIntro() {
+    infoNav.hidden = true;
+    renderDim();
+    content.innerHTML = `
+      <div class="intro">
+        <p class="intro__text">Comienza navegando en el recurso</p>
+        <button class="intro__btn" id="startBtn">Iniciar</button>
+      </div>
+    `;
+    document.getElementById('startBtn').addEventListener('click', () => goTo(0));
+  }
+
+  function renderSlide() {
+    infoNav.hidden = false;
+    const s = SLIDES[index];
+    renderDim();
+
+    content.innerHTML = `
+      <div class="slide">
+        <h2 class="slide__title">${index + 1}/ ${s.title}</h2>
+
+        <div class="card card--bad" id="cardBad">
+          <div class="card__head">
+            <div class="card__head-main">
+              <span class="card__bar"></span>
+              <span class="card__label">Qué es incorrecto</span>
+            </div>
+          </div>
+          <div class="card__body">
+            ${bulletList(s.problem)}
+            <hr class="card__divider" />
+            <p class="card__subhead">Por qué es un problema:</p>
+            ${bulletList(s.why)}
+          </div>
+        </div>
+
+        <button class="reveal-btn" id="revealBtn">¿Qué es correcto? <img class="chev" src="../../Recursos/iconos/arrow-right-solid-full.svg" alt="" /></button>
+
+        <div class="card card--good" id="cardGood" hidden>
+          <div class="card__head">
+            <div class="card__head-main">
+              <span class="card__bar"></span>
+              <span class="card__label">Qué es correcto</span>
+            </div>
+          </div>
+          <div class="card__body">
+            ${bulletList(s.fix)}
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('revealBtn').addEventListener('click', reveal);
+
+    counterCurrent.textContent = index + 1;
+    navFill.style.width = ((index + 1) / SLIDES.length * 100) + '%';
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === SLIDES.length - 1;
+  }
+
+  function reveal() {
+    const revealBtn = document.getElementById('revealBtn');
+    const cardBad = document.getElementById('cardBad');
+    const cardGood = document.getElementById('cardGood');
+
+    revealBtn.remove();
+    cardGood.hidden = false;
+    cardBad.classList.add('is-collapsed');
+
+    [cardBad, cardGood].forEach(card => {
+      const head = card.querySelector('.card__head');
+      head.classList.add('is-toggle');
+      const chevron = document.createElement('button');
+      chevron.className = 'card__chevron';
+      chevron.type = 'button';
+      chevron.setAttribute('aria-label', 'Mostrar u ocultar');
+      chevron.innerHTML = '<img src="../../Recursos/iconos/angle-down-solid-full.svg" alt="" />';
+      chevron.addEventListener('click', () => card.classList.toggle('is-collapsed'));
+      head.appendChild(chevron);
+    });
+  }
+
+  function goTo(i) {
+    index = Math.max(0, Math.min(SLIDES.length - 1, i));
+    renderSlide();
+  }
+
+  prevBtn.addEventListener('click', () => goTo(index - 1));
+  nextBtn.addEventListener('click', () => goTo(index + 1));
+  document.addEventListener('keydown', e => {
+    if (index < 0) return;
+    if (e.key === 'ArrowRight') goTo(index + 1);
+    if (e.key === 'ArrowLeft') goTo(index - 1);
+  });
+
+  renderIntro();
+</script>
+
+</body>
+</html>
