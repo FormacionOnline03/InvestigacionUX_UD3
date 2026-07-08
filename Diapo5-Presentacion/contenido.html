@@ -289,6 +289,12 @@ a {
   font-size: 4.860cqw;
   line-height: normal;
 }
+
+/* Nota bajo el cierre: misma tipografía que el texto de la sección anterior
+   (hereda font-family/size/line-height/color de .text-wrapper). */
+.slide .closing-note {
+  margin-top: 1.8cqw;
+}
 </style>
 </head>
 <body>
@@ -328,7 +334,10 @@ a {
           <p>Explorar el sitio web del centro cultural implica navegar por un ecosistema digital amplio, dinámico y en constante evolución en el que la organización de la información, la claridad en la navegación y la accesibilidad juegan un papel fundamental en la experiencia de los usuarios.</p>
         </div>
       </div>
-      <p class="text-wrapper text-wrapper--new text-wrapper--serif" id="site-details-5"><span class="entry-mask"><span class="entry-word--scroll" id="site-details-5-inner">A continuación, visitarás el sitio web<br />del centro cultural.</span></span></p>
+      <div class="text-wrapper text-wrapper--new" id="site-details-5">
+        <p class="text-wrapper--serif"><span class="entry-mask"><span class="entry-word--scroll" id="site-details-5-inner">A continuación, visitarás el sitio web<br />del centro cultural.</span></span></p>
+        <p class="closing-note">Haz clic en SIGUIENTE</p>
+      </div>
     </div>
   </section>
 </main>
